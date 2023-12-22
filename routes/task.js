@@ -6,27 +6,15 @@ const { getTasks } = require("../mock-data.js");
 
 router.get("/", (req, res) => {
   const params = req.query;
-  //   const tasks = getTasks();
-
-  //   if (params.phaseId) {
-  //     const filteredTasks = tasks.filter(
-  //       (task) => task.phaseId === params.phaseId
-  //     );
-  //     res.send(filteredTasks);
-  //     return;
-  //   } else {
-  //     const tasksByPhaseId = Object.groupBy(tasks, ({ phaseId }) => phaseId);
-  //     res.send(tasksByPhaseId);
-  //   }
-
   if (params.phaseId) {
-    const tasks = getTasks({ phaseId: params.phaseId });
-    res.json(tasks);
+    const phaseIds = params.phaseId.split(",");
+    const tasks = getTasks({ phaseId: phaseIds });
+    return res.json(tasks);
   } else if (params.taskId) {
     const tasks = getTasks({ taskId: params.taskId });
-    res.json(tasks);
+    return res.json(tasks);
   }
-  res.json(getTasks({}));
+  return res.json(getTasks({}));
 });
 
 router.post("/move", (req, res) => {
@@ -58,5 +46,7 @@ router.post("/move", (req, res) => {
   //   setTasks(tasks);
   //   res.send(tasks[index]);
 });
+
+router.get("/");
 
 module.exports = router;
